@@ -14,7 +14,8 @@ app.use(cors());
 
 //Convertir body a objeto objeto js
 
-app.use(express.json());
+app.use(express.json());//Recibir datos con content-type app/json
+app.use(express.urlencoded({extended:true}));//Recibir datos por forms-urlenconded
 
 //Crear rutas
 const rutasArticulos = require("./rutas/RutaArticulo");//Carga rutas
