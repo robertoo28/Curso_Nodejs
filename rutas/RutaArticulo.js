@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const articulosControlador = require("../controladores/Articulo")
+const articulosControlador = require("../controladores/Articulo");
 //Rutas de pruebas
 
-router.get("/ruta_prueba",articulosControlador.prueba);
-router.post("/crear",articulosControlador.crear);
-router.get("/buscar/:ultimos?",articulosControlador.conseguirArticulos)
-router.get("/buscar_un_articulo/:id",articulosControlador.uno)
+router.get("/ruta_prueba", articulosControlador.prueba);
+router.post("/crear", articulosControlador.crear);
+router.get("/buscar/:ultimos?", articulosControlador.conseguirArticulos);
+router.get("/buscar_un_articulo/:id", articulosControlador.uno);
+router.delete("/eliminar/:id", articulosControlador.borrar);
+router.put("/actualizar/:id", articulosControlador.actualizar);
 
-module.exports=router;
+module.exports = router;
