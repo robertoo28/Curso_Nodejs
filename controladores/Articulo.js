@@ -113,7 +113,7 @@ const uno = (req,res)=>{
                     mensaje: "No se encontrado articulo",
                     error
                 });
-        });*/
+        });*/ //Se debe probar por que no funciona
 
     });
     
