@@ -105,7 +105,6 @@ const borrar = (req, res) => {
   let id = req.params.id;
   console.log("Aca llega");
   Articulo.findOneAndDelete({ _id: id }).then((articuloBorrado) => {
-    
     if (!articuloBorrado) {
       return res.status(500).json({
         status: "error",
@@ -118,49 +117,53 @@ const borrar = (req, res) => {
       message: "Borrado",
     });
   });
-}
+};
 
-const actualizar =(req,res)=>{
-    //Recoger id
-    let id = req.params.id;
-    //Recoger datos
-    let parametros = req.body;
+const actualizar = (req, res) => {
+  //Recoger id
+  let id = req.params.id;
+  //Recoger datos
+  let parametros = req.body;
 
+  //Validar datos
+  try {
+    let validarTitulo = !validator.isEmpty(parametros.titulo);
+    let validarContenido = !validator.isEmpty(parametros.contenido);
+    if (!validarContenido || !validarContenido) {
+      throw new Error("Información no validada");
+    }
+  } catch (error) {
+    return res.status(400).json({
+      status: "error",
+      mensaje: "Faltan datos por enviar",
+    });
+  }
 
-    //Validar datos
-    try {
-        let validarTitulo = !validator.isEmpty(parametros.titulo);
-        let validarContenido = !validator.isEmpty(parametros.contenido);
-        if (!validarContenido || !validarContenido) {
-          throw new Error("Información no validada");
-        }
-      } catch (error) {
-        return res.status(400).json({
+  //Buscar y actualizar articulo
+
+  Articulo.findOneAndUpdate({ _id: id }, req.body, { new: true }).then(
+    (articuloActualizado) => {
+      if (!articuloActualizado) {
+        return res.status(500).json({
           status: "error",
-          mensaje: "Faltan datos por enviar",
+          message: "Error al actualizar",
         });
       }
+      //Devolver respuesta
+      return res.status(200).json({
+        status: "succes",
+        articulo: articuloActualizado,
+      });
+    }
+  );
 
-    //Buscar y actualizar articulo
+  //Devolver respuesta
+};
 
-    Articulo.findOneAndUpdate({_id:id},parametros).then((articuloActualizado)=>{
-
-
-        if(!articuloActualizado){
-            return res.status(500).json({
-                status:"error",
-                message:"Error al actualizar"
-            })
-        }
-        //Devolver respuesta
-        return res.status(200).json({
-            status:"succes",
-            articulo:articuloActualizado
-        })
-
-    })
-
-    //Devolver respuesta
+const subir = (req,res)=>{
+  return res.status(200).json({
+    status: "succes",
+  });
 }
 
 module.exports = {
@@ -169,5 +172,6 @@ module.exports = {
   conseguirArticulos,
   uno,
   borrar,
-  actualizar
+  actualizar,
+  subir
 };

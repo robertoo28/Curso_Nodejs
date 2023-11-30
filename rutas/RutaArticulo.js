@@ -9,5 +9,6 @@ router.get("/buscar/:ultimos?", articulosControlador.conseguirArticulos);
 router.get("/buscar_un_articulo/:id", articulosControlador.uno);
 router.delete("/eliminar/:id", articulosControlador.borrar);
 router.put("/actualizar/:id", articulosControlador.actualizar);
+router.post("/subir-imagen/:id",articulosControlador.subir);
 
 module.exports = router;
