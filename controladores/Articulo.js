@@ -1,5 +1,6 @@
 const validator = require("validator");
 const Articulo = require("../modelos/Articulos");
+const fs = require("fs");
 const prueba = (req, res) => {
   return res.status(200).json({
     mesnaje: "Prueba controlador articulos",
@@ -161,9 +162,46 @@ const actualizar = (req, res) => {
 };
 
 const subir = (req,res)=>{
-  return res.status(200).json({
-    status: "succes",
-  });
+
+  //Configurar multer
+
+  //Recoger el fichero de imagen subida
+  if(!req.file && !req.files){
+    return res.status(404).json({
+      status: "errro",
+      mensaje:"Petición no valida"
+    })
+
+  }
+
+  //Nombre del archivo
+  let archivo = req.file.originalname;
+  // Extension del archivo
+  let archivo_split = archivo.split("\.");
+  let extension = archivo_split[1];
+
+  //comprobar extension correcta
+  if(extension != "png"&& extension != "jpg"&& extension !="jpeg"&& extension != "gif"){
+      //Borrar archivo
+      fs.unlink(req.file.path,(error)=>{
+        return res.status(400).json({
+          status: "errro",
+          mensaje:"Extension invalida"
+        })
+      })
+
+
+  }else{
+    return res.status(200).json({
+      status: "succes",
+      archivo_split,
+      files: req.file
+    });
+
+  }
+
+
+ 
 }
 
 module.exports = {
